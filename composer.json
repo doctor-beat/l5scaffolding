@@ -1,0 +1,12 @@
+{
+    "name": "doctorbeat/l5-scaffolding",
+    "description": "A dynamic scaffolding for laravel 5. The rails way.",
+    "authors": [
+        {
+            "name": "Me",
+            "email": "me@github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
