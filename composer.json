@@ -7,6 +7,5 @@
             "email": "me@github.com"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {}
+    "minimum-stability": "dev"
 }

@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "eb79a98c88827227c11ccbcd3c674100",
+    "content-hash": "77e967adc69714ece9b986c7aa04930f",
+    "packages": [
+        {
+            "name": "doctorbeat/eloquent-repository",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctor-beat/eloquent-repository.git",
+                "reference": "d82bc33f74d59d149d2b841bafc5204d3eb41c53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctor-beat/eloquent-repository/zipball/d82bc33f74d59d149d2b841bafc5204d3eb41c53",
+                "reference": "d82bc33f74d59d149d2b841bafc5204d3eb41c53",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DoctorBeat\\": "src/DoctorBeat/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A repository for eloquent models. Using this makes the model appear to have a sigle responsibility",
+            "keywords": [
+                "eloquent",
+                "repository"
+            ],
+            "time": "2016-03-25 14:27:46"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
