@@ -5,7 +5,7 @@ namespace DoctorBeat\L5Scaffolding\Controller;
 use Illuminate\Routing\Controller;
 
 class ScaffoldingController extends Controller{
-    public function index()
+    public function models()
     {
         $dir = config('l5scaffolding.model_dir');
         $path = app_path($dir);
@@ -17,10 +17,10 @@ class ScaffoldingController extends Controller{
             }
         }
         
-        return view('l5scaffolding::index', compact('models'));
+        return view('l5scaffolding::models', compact('models'));
     }
 
-    public function listm($model, \DoctorBeat\L5Scaffolding\Metadata\SqliteMetadataRepository $repo)
+    public function index($model, \DoctorBeat\L5Scaffolding\Metadata\SqliteMetadataRepository $repo)
     {
         $dir = config('l5scaffolding.model_dir');
         
@@ -32,7 +32,18 @@ class ScaffoldingController extends Controller{
         
         $metadata = $repo->getMetadata('Demo');
         
-        return view('l5scaffolding::list', compact(['model', 'rows', 'metadata']));
+        return view('l5scaffolding::index', compact(['model', 'rows', 'metadata']));
+    }
+
+    public function create($model, \DoctorBeat\L5Scaffolding\Metadata\SqliteMetadataRepository $repo)
+    {
+        $dir = config('l5scaffolding.model_dir');
+        
+        $class ="App\\{$dir}\\{$model}"; 
+        
+        $metadata = $repo->getMetadata('Demo');
+        
+        return view('l5scaffolding::form', compact(['model', 'metadata']));
     }
     
     //todo:

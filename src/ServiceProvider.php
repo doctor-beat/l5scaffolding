@@ -1,7 +1,11 @@
 <?php
 namespace DoctorBeat\L5Scaffolding;
 
+use Collective\Html\FormFacade;
+use Collective\Html\HtmlFacade;
+use Collective\Html\HtmlServiceProvider;
 use DoctorBeat\L5Scaffolding\Controller\ScaffoldingController;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends  BaseServiceProvider {
@@ -18,5 +22,15 @@ class ServiceProvider extends  BaseServiceProvider {
     {
         $this->loadViewsFrom(__DIR__.'/resources/views', 'l5scaffolding');
         $this->publishes([__DIR__.'/config' => config_path(self::PACKAGE_KEY)]);
+        
+        //register the html and form aliases:
+        $this->app->register(HtmlServiceProvider::class);
+        $loader = AliasLoader::getInstance();
+        if (! in_array('Form', $loader->getAliases())) {
+            $loader->alias('Form', FormFacade::class);
+        }
+        if (! in_array('Html', $loader->getAliases())) {
+            $loader->alias('Html', HtmlFacade::class);
+        }
     }
 }

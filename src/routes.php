@@ -4,6 +4,8 @@ use DoctorBeat\L5Scaffolding\Controller\ScaffoldingController;
 
 Route::group(['prefix' => 'scaffold'], function () {
     $class = ScaffoldingController::class;
-    Route::get('',  "{$class}@index");
-    Route::get('{model}',  "{$class}@listm");
+    Route::get('',                  ['uses' => "{$class}@models", 'as' => 'scf-models']);
+    Route::get('{model}',           ['uses' => "{$class}@index", 'as' => 'scf-index']);
+    Route::get('{model}/create',    ['uses' => "{$class}@create", 'as' => 'scf-create']);
+    Route::post('{model}',          ['uses' => "{$class}@store", 'as' => 'scf-store']);
 });
