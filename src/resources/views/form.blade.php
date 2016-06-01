@@ -8,11 +8,12 @@
     <br/>
 
     <table>
-        {{Form::model($data, ['route' => ['scf-store', $model]])}}
+        {{Form::model($data, 
+            [   'route' => [$route, $model, $id]
+            ,   'method' => ($route == 'scf-update' ? 'PUT' : 'POST')
+            ])}}
             @foreach ($metadata as $head)
-                @if ($head->key) 
-                    {{Form::hidden($head->name)}}  => {{print_r($head)}}
-                @else
+                @if (! $head->key) 
                     <tr>
                         <td>{{Form::label($head->name, $head->name)}}</td>
                         <td>{{ 

@@ -35,21 +35,46 @@ class ScaffoldingController extends Controller{
 
     public function create($model, MetadataRepository $repo, Request $request)
     {
+        return $this->form($model, null, $repo, $request, 'store');
+    }
+    
+    public function edit($model, $id, MetadataRepository $repo, Request $request)
+    {
+        return $this->form($model, $id, $repo, $request, 'update');
+    }
+    
+    protected function form($model, $id, MetadataRepository $repo, Request $request, $action) {
         $class = self::classname($model);
         $metadata = $repo->getMetadata($class);
         
         $data = $request->session()->get('data');
         $error = $request->session()->get('error');
         
-        return view('l5scaffolding::form', compact(['model', 'metadata', 'data', 'error']));
+        if (isset($id) && !$data) {
+            $data = $class::find($id);
+            if (! $data && ! $error) {
+                return "No data found for id '{$id}'"; 
+            }
+        }
+        
+        $route = 'scf-' . $action;
+        return view('l5scaffolding::form', compact(['model', 'metadata', 'data', 'error', 'route', 'id']));        
     }
     
     public function store($model, MetadataRepository $repo, Request $request) 
     {
+        return $this->save($model, null, $repo, $request);
+    }
+    public function update($model, $id, MetadataRepository $repo, Request $request) 
+    {
+        return $this->save($model, $id, $repo, $request);
+    }
+    
+    protected function save($model, $id, MetadataRepository $repo, Request $request){
         $class = self::classname($model);
         $metadata = $repo->getMetadata($class);
         
-        $entry = new $class();
+        $entry = isset($id) ? $class::find($id) : new $class();
         foreach ($metadata as $meta) {
             if (! $meta->key) {
                 $field = $meta->name;
