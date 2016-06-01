@@ -5,6 +5,7 @@ use Collective\Html\FormFacade;
 use Collective\Html\HtmlFacade;
 use Collective\Html\HtmlServiceProvider;
 use DoctorBeat\L5Scaffolding\Controller\ScaffoldingController;
+use DoctorBeat\L5Scaffolding\Metadata\MetadataRepository;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -16,6 +17,9 @@ class ServiceProvider extends  BaseServiceProvider {
         $this->app->make(ScaffoldingController::class);
         
         $this->mergeConfigFrom(__DIR__.'/config/main.php', self::PACKAGE_KEY);
+
+        $this->app->bind(MetadataRepository::class, config('l5scaffolding.metadataRepository'));        
+        
     }
     
     public function boot()

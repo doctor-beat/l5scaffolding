@@ -5,8 +5,8 @@ namespace DoctorBeat\L5Scaffolding\Metadata;
 use Illuminate\Database\DatabaseManager;
 use Log;
 
-class SqliteMetadataRepository {
-    const SQL = "PRAGMA table_info(Demo)";
+class SqliteMetadataRepository implements MetadataRepository{
+    const SQL = "PRAGMA table_info(%s)";
     
     /**
      *
@@ -23,8 +23,9 @@ class SqliteMetadataRepository {
      * Gets the metadata from the database;
      * @return DatabaseVolumn[] ordered list of database columns
      */
-    public function getMetadata($tablename) {
-        $data = $this->db->select(self::SQL);//, [$tablename]);
+    public function getMetadata($class) {
+        $tablename = (new $class)->getTable();
+        $data = $this->db->select(sprintf(self::SQL, $tablename));
         
         $columns = [];
         foreach ($data as $row) {

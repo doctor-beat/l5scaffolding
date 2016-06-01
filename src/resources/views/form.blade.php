@@ -2,9 +2,13 @@
 
 @section('title', $model . ' Create')
 
+
 @section('content')
+    @include('l5scaffolding::shared.errors')
+    <br/>
+
     <table>
-        {{Form::open(['route' => ['scf-store', $model]])}}
+        {{Form::model($data, ['route' => ['scf-store', $model]])}}
             @foreach ($metadata as $head)
                 @if ($head->key) 
                     {{Form::hidden($head->name)}}  => {{print_r($head)}}
