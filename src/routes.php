@@ -12,5 +12,6 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('{model}/{id}/edit',     ['uses' => "{$class}@edit",     'as' => 'scf-edit']);
         Route::put('{model}/{id}',          ['uses' => "{$class}@update",   'as' => 'scf-update']);
         Route::get('{model}/{id}/delete',   ['uses' => "{$class}@delete",   'as' => 'scf-delete']);
+        Route::delete('{model}/{id}',       ['uses' => "{$class}@destroy",  'as' => 'scf-destroy']);
     });
 });

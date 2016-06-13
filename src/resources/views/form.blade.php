@@ -10,22 +10,22 @@
     <table>
         {{Form::model($data, 
             [   'route' => [$route, $model, $id]
-            ,   'method' => ($route == 'scf-update' ? 'PUT' : 'POST')
+            ,   'method' => $method
             ])}}
             @foreach ($metadata as $head)
-                @if (! $head->key) 
+                @if ((!$head->key) || $data !== null)
                     <tr>
                         <td>{{Form::label($head->name, $head->name)}}</td>
                         <td>{{ 
-                            $head->key ?            Form::hidden($head->name)   : 
-                            $head->getType() == 'clob' ? Form::textarea($head->name) : Form::text($head->name)}}  
-                            => {{print_r($head)}}</td>
+                            ($route == 'scf-destroy' || $head->key) ? ($data !== null ? $data->{$head->name} : '') :        
+                            ($head->getType() == 'clob' ? Form::textarea($head->name) : Form::text($head->name))}}  
+                        </td>
                     </tr>
                 @endif
             @endforeach
             <tr>
                 <td></td>
-                <td>{{Form::submit()}}</td>
+                <td>{{Form::submit($route == 'scf-destroy' ? 'Delete' : null)}}</td>
             </tr>
         {{Form::close()}}
     </table>

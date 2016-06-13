@@ -16,7 +16,15 @@ class ScaffoldingController extends Controller{
         $models = [];
         foreach (scandir($path) as $file) {
             if (preg_match('/^(.*)\\.php$/', $file, $matches)) {
-                $models[] = $matches[1];
+                $model = $matches[1];
+                try {
+                    if (self::classname($model)) {
+                        $models[] = $model;
+                    }
+                }
+                catch (\Exception $e){
+                    //ignore
+                }
             }
         }
         
@@ -42,6 +50,11 @@ class ScaffoldingController extends Controller{
     {
         return $this->form($model, $id, $repo, $request, 'update');
     }
+
+    public function delete($model, $id, MetadataRepository $repo, Request $request)
+    {
+        return $this->form($model, $id, $repo, $request, 'destroy');
+    }
     
     protected function form($model, $id, MetadataRepository $repo, Request $request, $action) {
         $class = self::classname($model);
@@ -58,7 +71,12 @@ class ScaffoldingController extends Controller{
         }
         
         $route = 'scf-' . $action;
-        return view('l5scaffolding::form', compact(['model', 'metadata', 'data', 'error', 'route', 'id']));        
+        switch ($action) {
+            case 'update':  $method = 'PUT'; break;
+            case 'destroy': $method = 'DELETE'; break;
+            default:        $method = 'POST'; break;
+        }
+        return view('l5scaffolding::form', compact(['model', 'metadata', 'data', 'error', 'route', 'id', 'method']));        
     }
     
     public function store($model, MetadataRepository $repo, Request $request) 
@@ -68,6 +86,12 @@ class ScaffoldingController extends Controller{
     public function update($model, $id, MetadataRepository $repo, Request $request) 
     {
         return $this->save($model, $id, $repo, $request);
+    }
+    
+    public function destroy($model, $id, MetadataRepository $repo, Request $request){
+        $class = self::classname($model);
+        $class::destroy($id);
+        return $this->getRedirectToIndex($model);
     }
     
     protected function save($model, $id, MetadataRepository $repo, Request $request){
@@ -90,16 +114,27 @@ class ScaffoldingController extends Controller{
             return redirect()->route('scf-create', ['model' => $model]);
         }
         
-        return redirect()->route('scf-index', ['model' => $model]);
+        return $this->getRedirectToIndex($model);
     }
     
+    /**
+     * the full classname as a string
+     * @param String $model
+     * @return String the classname
+     * @throws \Exception when scaffolding not enabled
+     */
     protected static function classname($model) {
         $dir = config('l5scaffolding.model_dir');
         
-        return "App\\{$dir}\\{$model}";         
+        $classname = "App\\{$dir}\\{$model}";
+        if (! defined("$classname::SCAFFOLDING") || ! $classname::SCAFFOLDING) {
+            throw new \Exception("Scaffolding not enabled");
+        }
+        return $classname;
+    }
+    
+    protected function getRedirectToIndex($model) {
+        return redirect()->route('scf-index', ['model' => $model]);
     }
 
-
-    //todo:
-    //- hasScaffold enabled
 }
