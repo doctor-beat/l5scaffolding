@@ -3,6 +3,7 @@
 namespace DoctorBeat\L5Scaffolding\Controller;
 
 use DoctorBeat\L5Scaffolding\Metadata\MetadataRepository;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use PDOException;
@@ -129,6 +130,9 @@ class ScaffoldingController extends Controller{
         $classname = "App\\{$dir}\\{$model}";
         if (! defined("$classname::SCAFFOLDING") || ! $classname::SCAFFOLDING) {
             throw new \Exception("Scaffolding not enabled");
+        }
+        if (! is_a($classname, Model::class, true)) {
+            throw new \Exception("Model not a sub-class of Model");            
         }
         return $classname;
     }
