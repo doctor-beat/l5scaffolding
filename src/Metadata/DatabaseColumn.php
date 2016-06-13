@@ -37,6 +37,16 @@ class DatabaseColumn {
     function isText() {
         return $this->type === self::TYPE_TEXT;
     }
+    
+    function setTypeAndSize($typeAndSize){
+        $regex == '/^(\w+)(\(\d+\))?$/';
+        if(preg_match($regex, $typeAndSize, $matches)) {
+            $this->setType($matches[1]);
+            if (count($matches) >= 3) {
+                $this->size = $matches[2];
+            }
+        }
+    }
 
 
 }
